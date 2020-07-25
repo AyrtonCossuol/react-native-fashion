@@ -3,11 +3,10 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import Animated, { multiply, divide } from 'react-native-reanimated';
 import { interpolateColor, useScrollHandler } from 'react-native-redash';
 
-import Slider, { SLIDE_HEIGHT } from './Slide';
+import Slider, { SLIDE_HEIGHT, BORDER_RADIUS } from './Slide';
 import Subslider from './Subslide';
 import Dot from './Dot';
 
-const BORDER_RADIUS = 75;
 const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
@@ -87,8 +86,8 @@ const Onboarding = () => {
                     bounces={false}
                     {...scrollHandler}
                 >
-                    {slides.map(({ title },index) => (
-                        <Slider key={index} right={!!(index % 2)} {...{ title }}/>
+                    {slides.map(({ title, picture },index) => (
+                        <Slider key={index} right={!!(index % 2)} {...{ title, picture }}/>
                     ))}
                 </Animated.ScrollView>
             </Animated.View>
