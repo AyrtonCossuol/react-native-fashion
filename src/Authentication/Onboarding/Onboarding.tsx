@@ -41,25 +41,29 @@ const slides = [
         title: 'Relaxed', 
         subtitle: 'Find Your Outfits', 
         description: 'Confused about your outfit? Dont`t worry! Find the best outfit here!', 
-        color: '#bfeaf5'
+        color: '#bfeaf5',
+        picture: require('./assets/01.jpg'),
     },
     { 
         title: 'Playful', 
         subtitle: 'Hear it First, Wear it First', 
         description: 'Hating the clothen in your wardrobe? Explore hundreds of outfit ideas', 
-        color: '#beecc4' 
+        color: '#beecc4',
+        picture: require('./assets/02.jpg'),
     },
     { 
         title: 'Excentric', 
         subtitle: 'Your Style, Your Way', 
         description: 'Create your individual & unique style and look amazing everday', 
-        color: '#ffe4d9' 
+        color: '#ffe4d9',
+        picture: require('./assets/03.png'),
     },
     { 
         title: 'Funky', 
         subtitle: 'Look Good, Feel Good', 
         description: 'Discover the lastest trends in fashion and explore your personality', 
-        color: '#ffdddd' 
+        color: '#ffdddd',
+        picture: require('./assets/04.jpg'),
     }
 ];
 
