@@ -41,14 +41,14 @@ const slides = [
         subtitle: 'Find Your Outfits', 
         description: 'Confused about your outfit? Dont`t worry! Find the best outfit here!', 
         color: '#bfeaf5',
-        picture: require('./assets/01.jpg'),
+        picture: require('./assets/01.png'),
     },
     { 
         title: 'Playful', 
         subtitle: 'Hear it First, Wear it First', 
         description: 'Hating the clothen in your wardrobe? Explore hundreds of outfit ideas', 
         color: '#beecc4',
-        picture: require('./assets/02.jpg'),
+        picture: require('./assets/02.png'),
     },
     { 
         title: 'Excentric', 
@@ -62,7 +62,7 @@ const slides = [
         subtitle: 'Look Good, Feel Good', 
         description: 'Discover the lastest trends in fashion and explore your personality', 
         color: '#ffdddd',
-        picture: require('./assets/04.jpg'),
+        picture: require('./assets/04.png'),
     }
 ];
 
