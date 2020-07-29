@@ -3,9 +3,11 @@ import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import Animated, { multiply, divide, interpolate, Extrapolate } from 'react-native-reanimated';
 import { interpolateColor, useScrollHandler } from 'react-native-redash';
 
-import Slider, { SLIDE_HEIGHT, BORDER_RADIUS } from './Slide';
+import Slider, { SLIDE_HEIGHT } from './Slide';
 import Subslider from './Subslide';
 import Dot from './Dot';
+import { theme } from '../../components';
+import { StackNavigationProps, Routes } from '../../components/Navigation';
 
 const { width } = Dimensions.get('window');
 
@@ -16,13 +18,13 @@ const styles = StyleSheet.create({
     }, 
     slider: {
         height: SLIDE_HEIGHT,
-        borderBottomRightRadius: BORDER_RADIUS,
+        borderBottomRightRadius: theme.borderRadii.xl,
     },
     underlay: {
         ...StyleSheet.absoluteFillObject,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        borderBottomRightRadius: BORDER_RADIUS,
+        borderBottomRightRadius: theme.borderRadii.xl,
         overflow: 'hidden',
     },
     footer: {
@@ -31,11 +33,11 @@ const styles = StyleSheet.create({
     footerContent: {
         flex: 1,
         backgroundColor: 'white', 
-        borderTopLeftRadius: BORDER_RADIUS,
+        borderTopLeftRadius: theme.borderRadii.xl,
     },
     pagination: {
         ...StyleSheet.absoluteFillObject, 
-        height: BORDER_RADIUS, 
+        height: theme.borderRadii.xl, 
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -89,7 +91,7 @@ const slides = [
     }
 ];
 
-const Onboarding = () => {
+const Onboarding = ({ navigation }: StackNavigationProps<Routes, 'Onboarding'>) => {
     const scroll = useRef<Animated.ScrollView>(null);
     const { scrollHandler, x } = useScrollHandler();
     const backgroundColor = interpolateColor(x, {
@@ -115,8 +117,8 @@ const Onboarding = () => {
                         <Image 
                             source={picture.src} 
                             style={{ 
-                                width: width - BORDER_RADIUS,
-                                height: ((width - BORDER_RADIUS) * picture.height) / picture.width,
+                                width: width - theme.borderRadii.xl,
+                                height: ((width - theme.borderRadii.xl) * picture.height) / picture.width,
                             }} />
                     </Animated.View>);
                 })}
@@ -150,20 +152,25 @@ const Onboarding = () => {
                             width: width * slides.length,
                             transform: [{ translateX: multiply(x, -1) }] 
                         }}> 
-                        {slides.map(({ subtitle, description },index) => (
-                            <Subslider 
-                                key={index} 
-                                onPress={() => {
-                                    if(scroll.current){
-                                        scroll.current
-                                            .getNode()
-                                            .scrollTo({ x: width * (index + 1), animated: true });
-                                    }
-                                }}
-                                last={index === slides.length - 1} 
-                                {...{ subtitle, description }}
-                            />
-                        ))}
+                        {slides.map(({ subtitle, description },index) => {
+                            const last = index === slides.length - 1;
+
+                            return (
+                                <Subslider 
+                                    key={index} 
+                                    onPress={() => {
+                                        if (last) {
+                                            navigation.navigate('Welcome')
+                                        } else {
+                                            scroll.current
+                                                ?.getNode()
+                                                .scrollTo({ x: width * (index + 1), animated: true });
+                                        }
+                                    }}
+                                    {...{ subtitle, description, last }}
+                                />
+                            );
+                        })}
                     </Animated.View>
                 </View>
             </View>

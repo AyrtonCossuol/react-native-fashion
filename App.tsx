@@ -4,6 +4,7 @@ import { ThemeProvider } from '@shopify/restyle';
 
 import { Onboarding, Welcome } from './src/Authentication';
 import { LoadAssets, theme } from './src/components';
+import { Routes } from './src/components/Navigation';
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/FontsFree-Net-SFProDisplay-Bold.ttf"),
@@ -12,7 +13,7 @@ const fonts = {
   "SFProDisplay-Semibold": require("./assets/fonts/FontsFree-Net-SFProDisplay-Semibold.ttf"),
 };
 
-const AuthenticationStack = createStackNavigator();
+const AuthenticationStack = createStackNavigator<Routes>();
 const AuthenticationNavigator = () => {
   return(
     <AuthenticationStack.Navigator headerMode="none">
