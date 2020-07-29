@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import Animated, { multiply, divide } from 'react-native-reanimated';
+import { View, Image, StyleSheet, Dimensions } from 'react-native';
+import Animated, { multiply, divide, interpolate, Extrapolate } from 'react-native-reanimated';
 import { interpolateColor, useScrollHandler } from 'react-native-redash';
 
 import Slider, { SLIDE_HEIGHT, BORDER_RADIUS } from './Slide';
@@ -17,6 +17,13 @@ const styles = StyleSheet.create({
     slider: {
         height: SLIDE_HEIGHT,
         borderBottomRightRadius: BORDER_RADIUS,
+    },
+    underlay: {
+        ...StyleSheet.absoluteFillObject,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        borderBottomRightRadius: BORDER_RADIUS,
+        overflow: 'hidden',
     },
     footer: {
         flex: 1,
@@ -41,28 +48,44 @@ const slides = [
         subtitle: 'Find Your Outfits', 
         description: 'Confused about your outfit? Dont`t worry! Find the best outfit here!', 
         color: '#bfeaf5',
-        picture: require('./assets/01.png'),
+        picture: {
+            src: require('./assets/01.png'),
+            width: 2513,
+            height: 3583,
+        }
     },
     { 
         title: 'Playful', 
         subtitle: 'Hear it First, Wear it First', 
         description: 'Hating the clothen in your wardrobe? Explore hundreds of outfit ideas', 
         color: '#beecc4',
-        picture: require('./assets/02.png'),
+        picture: {
+            src: require('./assets/02.png'),
+            width: 2791,
+            height: 3744,
+        }
     },
     { 
         title: 'Excentric', 
         subtitle: 'Your Style, Your Way', 
         description: 'Create your individual & unique style and look amazing everday', 
         color: '#ffe4d9',
-        picture: require('./assets/03.png'),
+        picture: {
+            src: require('./assets/03.png'),
+            width: 2738,
+            height: 3244,
+        }
     },
     { 
         title: 'Funky', 
         subtitle: 'Look Good, Feel Good', 
         description: 'Discover the lastest trends in fashion and explore your personality', 
         color: '#ffdddd',
-        picture: require('./assets/04.png'),
+        picture: {
+            src: require('./assets/04.png'),
+            width: 1757,
+            height: 2551,
+        }
     }
 ];
 
@@ -77,6 +100,28 @@ const Onboarding = () => {
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.slider, { backgroundColor }]}>
+                {slides.map(({ picture }, index) => {
+                    const opacity = interpolate(x, {
+                        inputRange: [
+                            (index - 0.5) * width,
+                            index * width,
+                            (index + 0.5) * width,
+                        ],
+                        outputRange: [0, 1, 0],
+                        extrapolate: Extrapolate.CLAMP,
+                    });
+                    return (
+                    <Animated.View style={[styles.underlay, { opacity }]} key={index}>
+                        <Image 
+                            source={picture.src} 
+                            style={{ 
+                                width: width - BORDER_RADIUS,
+                                height: ((width - BORDER_RADIUS) * picture.height) / picture.width,
+                            }} />
+                    </Animated.View>);
+                })}
+                
+
                 <Animated.ScrollView 
                     ref={scroll}
                     horizontal 
