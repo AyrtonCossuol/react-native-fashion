@@ -51,7 +51,7 @@ const slides = [
         description: 'Confused about your outfit? Dont`t worry! Find the best outfit here!', 
         color: '#bfeaf5',
         picture: {
-            src: require('./assets/01.png'),
+            src: require('../assets/01.png'),
             width: 2513,
             height: 3583,
         }
@@ -62,7 +62,7 @@ const slides = [
         description: 'Hating the clothen in your wardrobe? Explore hundreds of outfit ideas', 
         color: '#beecc4',
         picture: {
-            src: require('./assets/02.png'),
+            src: require('../assets/02.png'),
             width: 2791,
             height: 3744,
         }
@@ -73,7 +73,7 @@ const slides = [
         description: 'Create your individual & unique style and look amazing everday', 
         color: '#ffe4d9',
         picture: {
-            src: require('./assets/03.png'),
+            src: require('../assets/03.png'),
             width: 2738,
             height: 3244,
         }
@@ -84,12 +84,14 @@ const slides = [
         description: 'Discover the lastest trends in fashion and explore your personality', 
         color: '#ffdddd',
         picture: {
-            src: require('./assets/04.png'),
+            src: require('../assets/04.png'),
             width: 1757,
             height: 2551,
         }
     }
 ];
+
+export const assets = slides.map(slide => slide.picture.src);
 
 const Onboarding = ({ navigation }: StackNavigationProps<Routes, 'Onboarding'>) => {
     const scroll = useRef<Animated.ScrollView>(null);
