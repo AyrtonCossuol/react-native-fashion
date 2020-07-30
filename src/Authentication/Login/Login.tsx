@@ -9,7 +9,7 @@ const Login = () => {
         <>
             <SocialLogin />
             <Box alignItems='center'>
-                <Button variant='transparent'>
+                <Button variant='transparent' onPress={() => alert('SignUp!')}>
                     <Box flexDirection='row' justifyContent='center'>
                         <Text variant='button' color='white'>Don't have an account?</Text>
                         <Text marginLeft='s' variant='button' color='primary'>Sign Up here</Text>
