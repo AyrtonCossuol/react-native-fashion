@@ -8,6 +8,7 @@ import TextInput from '../components/Form/TextInput';
 const emailValidator = (email: string) => 
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 
+const passwordValidator = (password: string) => true;
 const Login = () => {
     const footer = (
         <>
@@ -34,9 +35,11 @@ const Login = () => {
                     Welcome Back
                 </Text>
 
-                <Text variant='body' textAlign='center'>Use your credentials below and login to your account</Text>
-
-                <TextInput icon='mail' placeholder='Enter your Email' validator={emailValidator} />
+                <Text variant='body' textAlign='center' marginBottom='l'>Use your credentials below and login to your account</Text>
+                <Box marginBottom='m'>
+                    <TextInput icon='mail' placeholder='Enter your Email' validator={emailValidator} />
+                </Box>
+                <TextInput icon='lock' placeholder='Enter your Password' validator={passwordValidator} />
             </Box>
         </Container>
     );
