@@ -16,13 +16,22 @@ const Invalid = false;
 const Pristine = null;
 type InputState = typeof Valid | typeof Invalid | typeof Pristine;
 
-const TextInput = ({ icon, ...props }: TextInputProps) => {
+const TextInput = ({ icon, validator, ...props }: TextInputProps) => {
     const [input, setInput] = useState('');
     const [state, setState] = useState<InputState>(Pristine);
     const reColor: keyof typeof theme.colors = 
         state === Pristine ? 'text' : (state === Valid) ? 'primary' : 'danger';
-    const color = theme.colors[reColor]
-
+    const color = theme.colors[reColor];
+    const onChangeText = (text: string) => {
+        setInput(text)
+        if (state !== Pristine) {
+            validate();
+        }
+    };
+    const validate = () => {
+        const valid = validator(input);
+        setState(valid);
+    };
 
     return (
         <Box 
@@ -32,19 +41,31 @@ const TextInput = ({ icon, ...props }: TextInputProps) => {
             borderRadius='s'
             borderWidth={StyleSheet.hairlineWidth}
             borderColor={reColor}
+            padding='s'
         >
             <Box padding='s'>
                 <Icon name={icon} size={16} {...{ color }}/>
             </Box>
 
-            <RNTextInput 
-                underlineColorAndroid='transparent' 
-                placeholderTextColor={color} 
-                {...props}
-            />
+            <Box flex={1}>
+                <RNTextInput 
+                    underlineColorAndroid='transparent' 
+                    placeholderTextColor={color} 
+                    onBlur={validate}
+                    {...{onChangeText}}
+                    {...props}
+                />
+            </Box>
             {
                 (state === Valid || state === Invalid) && (
-                    <Box height={SIZE} width={SIZE} borderRadius='m'>
+                    <Box 
+                        height={SIZE} 
+                        width={SIZE} 
+                        borderRadius='m' 
+                        backgroundColor={state === Valid ? 'primary' : 'danger'}
+                        justifyContent='center'
+                        alignItems='center'
+                    >
                         <Icon name={state === Valid ? 'check' : 'x'} size={16} color='white' />
                     </Box> 
                 )
