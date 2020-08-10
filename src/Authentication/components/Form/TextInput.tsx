@@ -7,31 +7,15 @@ import { Box, theme } from '../../../components';
 
 interface TextInputProps extends RNTextInputProps {
     icon: string;
-    validator: (input: string) => boolean;
+    touched?: boolean;
+    error?: string;
 };
 
 const SIZE = theme.borderRadii.m * 2;
-const Valid = true;
-const Invalid = false;
-const Pristine = null;
-type InputState = typeof Valid | typeof Invalid | typeof Pristine;
 
-const TextInput = ({ icon, validator, ...props }: TextInputProps) => {
-    const [input, setInput] = useState('');
-    const [state, setState] = useState<InputState>(Pristine);
-    const reColor: keyof typeof theme.colors = 
-        state === Pristine ? 'text' : (state === Valid) ? 'primary' : 'danger';
+const TextInput = ({ icon, touched, error, ...props }: TextInputProps) => {
+    const reColor = !touched ? 'text' : error ? 'danger' : 'primary';
     const color = theme.colors[reColor];
-    const onChangeText = (text: string) => {
-        setInput(text)
-        if (state !== Pristine) {
-            validate();
-        }
-    };
-    const validate = () => {
-        const valid = validator(input);
-        setState(valid);
-    };
 
     return (
         <Box 
@@ -51,22 +35,20 @@ const TextInput = ({ icon, validator, ...props }: TextInputProps) => {
                 <RNTextInput 
                     underlineColorAndroid='transparent' 
                     placeholderTextColor={color} 
-                    onBlur={validate}
-                    {...{onChangeText}}
                     {...props}
                 />
             </Box>
             {
-                (state === Valid || state === Invalid) && (
+                touched && (
                     <Box 
                         height={SIZE} 
                         width={SIZE} 
                         borderRadius='m' 
-                        backgroundColor={state === Valid ? 'primary' : 'danger'}
+                        backgroundColor={!error ? 'primary' : 'danger'}
                         justifyContent='center'
                         alignItems='center'
                     >
-                        <Icon name={state === Valid ? 'check' : 'x'} size={16} color='white' />
+                        <Icon name={!error ? 'check' : 'x'} size={16} color='white' />
                     </Box> 
                 )
             }

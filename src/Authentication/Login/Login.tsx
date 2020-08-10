@@ -1,4 +1,6 @@
 import React from 'react';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import { Container, Button, Text, Box } from '../../components';
 import SocialLogin from '../components/SocialLogin';
@@ -6,10 +8,16 @@ import TextInput from '../components/Form/TextInput';
 import Checkbox from '../components/Form/Checkbox';
 
 
-const emailValidator = (email: string) => 
-    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+const LoginSchema = Yup.object().shape({
+    password: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    email: Yup.string()
+      .email('Invalid email')
+      .required('Required'),
+  });
 
-const passwordValidator = (password: string) => password.length >= 6;
 const Login = () => {
     const footer = (
         <>
@@ -38,22 +46,58 @@ const Login = () => {
 
                 <Text variant='body' textAlign='center' marginBottom='l'>Use your credentials below and login to your account</Text>
                 
-                <Box marginBottom='m'>
-                    <TextInput icon='mail' placeholder='Enter your Email' validator={emailValidator} />
-                </Box>
+                <Formik
+                    validationSchema= {LoginSchema}
+                    initialValues={{ email: '', password: '' }}
+                    onSubmit={values => console.log(values)}
+                >
+                    {({ 
+                        handleChange, 
+                        handleBlur, 
+                        handleSubmit, 
+                        values,
+                        errors,
+                        touched, 
+                    }) => (
+                        <Box>
+                            <Box marginBottom='m'>
+                                <TextInput 
+                                    icon='mail' 
+                                    placeholder='Enter your Email' 
+                                    onChangeText={handleChange('email')}
+                                    onBlur={handleBlur('email')}
+                                    error={errors.email}
+                                    touched={touched.email}
+                                />
+                            </Box>
+                            
+                            <TextInput 
+                                icon='lock' 
+                                placeholder='Enter your Password' 
+                                onChangeText={handleChange('password')}
+                                onBlur={handleBlur('password')}
+                                error={errors.password}
+                                touched={touched.password}
+                            />
+
+                            <Box flexDirection='row' justifyContent='space-between'> 
+                                <Checkbox label='Remember me' />
+                                <Button variant='transparent' onPress={() => true}> 
+                                    <Text color='primary'>Forgot password</Text>
+                                </Button>
+                            </Box>
+
+                            <Box alignItems='center' marginTop='m'>
+                                <Button 
+                                    variant='primary' 
+                                    onPress={handleSubmit} 
+                                    label='Log into your account' 
+                                />
+                            </Box>
+                        </Box>
+                    )}
+                </Formik>
                 
-                <TextInput icon='lock' placeholder='Enter your Password' validator={passwordValidator} />
-
-                <Box flexDirection='row' justifyContent='space-between'> 
-                    <Checkbox label='Remember me' />
-                    <Button variant='transparent' onPress={() => true}> 
-                        <Text color='primary'>Forgot password</Text>
-                    </Button>
-                </Box>
-
-                <Box alignItems='center' marginTop='m'>
-                    <Button variant='primary' onPress={() => true} label='Log into your account' />
-                </Box>
             </Box>
         </Container>
     );
