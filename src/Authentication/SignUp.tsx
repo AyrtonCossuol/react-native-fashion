@@ -1,14 +1,119 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useRef } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
-interface SignUp {
+import { Container, Button, Text, Box } from '../components';
+import { StackNavigationProps, Routes } from '../components/Navigation';
 
-}
+import TextInput from './components/Form/TextInput';
+import Checkbox from './components/Form/Checkbox';
+import Footer from './components/Footer';
 
-const SignUp = () => {
+
+const SignUpSchema = Yup.object().shape({
+    password: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    email: Yup.string()
+      .email('Invalid email')
+      .required('Required'),
+  });
+
+const SignUp = ({ navigation }: StackNavigationProps<Routes, 'SignUp'>) => {
+    const { 
+        handleChange, 
+        handleBlur, 
+        handleSubmit, 
+        errors,
+        touched, 
+        values,
+        setFieldValue,
+    } = useFormik({
+        validationSchema: SignUpSchema,
+        initialValues: { email: '', password: '', remember: false },
+        onSubmit: values => console.log(values),
+    });
+
+    const password = useRef<typeof TextInput>(null);
+
+    const footer = <Footer 
+        title="Already have an account?" 
+        action="Login here" 
+        onPress={() => navigation.navigate('Login')} 
+    />
+
+
     return (
-        <View />
+        <Container {...{ footer }}>
+            <Box padding='xl'>
+                <Text 
+                    variant='title1' 
+                    textAlign='center' 
+                    marginBottom='l'
+                >
+                    Create account
+                </Text>
+
+                <Text variant='body' textAlign='center' marginBottom='l'>
+                    Let's us know what your name, email, and your password
+                </Text>
+                
+                <Box>
+                    <Box marginBottom='m'>
+                        <TextInput 
+                            icon='mail' 
+                            placeholder='Enter your Email' 
+                            onChangeText={handleChange('email')}
+                            onBlur={handleBlur('email')}
+                            error={errors.email}
+                            touched={touched.email}
+                            autoCompleteType='email'
+                            autoCapitalize='none'
+                            returnKeyLabel='next'
+                            returnKeyType='next'
+                            onSubmitEditing={() => password.current?.focus()}
+                        />
+                    </Box>
+                    
+                    <TextInput 
+                        ref={password}
+                        icon='lock' 
+                        placeholder='Enter your Password' 
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                        error={errors.password}
+                        touched={touched.password}
+                        secureTextEntry
+                        autoCompleteType='password'
+                        autoCapitalize='none'
+                        returnKeyLabel='go'
+                        returnKeyType='go'
+                        onSubmitEditing={() => handleSubmit()}
+                    />
+
+                    <Box flexDirection='row' justifyContent='space-between'> 
+                        <Checkbox 
+                            label='Remember me' 
+                            checked={values.remember} 
+                            onChange={() => setFieldValue('remember', !values.remember)}
+                        />
+                        <Button variant='transparent' onPress={() => true}> 
+                            <Text color='primary'>Forgot password</Text>
+                        </Button>
+                    </Box>
+
+                    <Box alignItems='center' marginTop='m'>
+                        <Button 
+                            variant='primary' 
+                            onPress={handleSubmit} 
+                            label='Create your account' 
+                        />
+                    </Box>
+                </Box>
+            </Box>
+        </Container>
     );
-}
+};
 
 export default SignUp;
