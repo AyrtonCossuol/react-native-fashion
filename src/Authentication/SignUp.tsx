@@ -6,7 +6,6 @@ import { Container, Button, Text, Box } from '../components';
 import { StackNavigationProps, Routes } from '../components/Navigation';
 
 import TextInput from './components/Form/TextInput';
-import Checkbox from './components/Form/Checkbox';
 import Footer from './components/Footer';
 
 
@@ -14,6 +13,9 @@ const SignUpSchema = Yup.object().shape({
     password: Yup.string()
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
+      .required('Required'),
+    passwordConfirmation: Yup.string()
+      .equals([Yup.ref('password')], "Password don't match")
       .required('Required'),
     email: Yup.string()
       .email('Invalid email')
@@ -26,16 +28,20 @@ const SignUp = ({ navigation }: StackNavigationProps<Routes, 'SignUp'>) => {
         handleBlur, 
         handleSubmit, 
         errors,
-        touched, 
-        values,
-        setFieldValue,
+        touched,
     } = useFormik({
         validationSchema: SignUpSchema,
-        initialValues: { email: '', password: '', remember: false },
+        initialValues: { 
+            email: '', 
+            password: '', 
+            passwordConfirmation: '',
+            remember: false 
+        },
         onSubmit: values => console.log(values),
     });
 
     const password = useRef<typeof TextInput>(null);
+    const passwordConfirmation = useRef<typeof TextInput>(null);
 
     const footer = <Footer 
         title="Already have an account?" 
@@ -75,32 +81,40 @@ const SignUp = ({ navigation }: StackNavigationProps<Routes, 'SignUp'>) => {
                             onSubmitEditing={() => password.current?.focus()}
                         />
                     </Box>
-                    
-                    <TextInput 
-                        ref={password}
-                        icon='lock' 
-                        placeholder='Enter your Password' 
-                        onChangeText={handleChange('password')}
-                        onBlur={handleBlur('password')}
-                        error={errors.password}
-                        touched={touched.password}
-                        secureTextEntry
-                        autoCompleteType='password'
-                        autoCapitalize='none'
-                        returnKeyLabel='go'
-                        returnKeyType='go'
-                        onSubmitEditing={() => handleSubmit()}
-                    />
-
-                    <Box flexDirection='row' justifyContent='space-between'> 
-                        <Checkbox 
-                            label='Remember me' 
-                            checked={values.remember} 
-                            onChange={() => setFieldValue('remember', !values.remember)}
+                    <Box marginBottom='m'>
+                        <TextInput 
+                            ref={password}
+                            icon='lock' 
+                            placeholder='Enter your Password' 
+                            onChangeText={handleChange('password')}
+                            onBlur={handleBlur('password')}
+                            error={errors.password}
+                            touched={touched.password}
+                            secureTextEntry
+                            autoCompleteType='password'
+                            autoCapitalize='none'
+                            returnKeyLabel='next'
+                            returnKeyType='next'
+                            onSubmitEditing={() => handleSubmit()}
                         />
-                        <Button variant='transparent' onPress={() => true}> 
-                            <Text color='primary'>Forgot password</Text>
-                        </Button>
+                    </Box>
+                    
+                    <Box marginBottom='m'>
+                        <TextInput 
+                            ref={password}
+                            icon='lock' 
+                            placeholder='Confirm your Password' 
+                            onChangeText={handleChange('passwordConfirmation')}
+                            onBlur={handleBlur('passwordConfirmation')}
+                            error={errors.passwordConfirmation}
+                            touched={touched.passwordConfirmation}
+                            secureTextEntry
+                            autoCompleteType='password'
+                            autoCapitalize='none'
+                            returnKeyLabel='go'
+                            returnKeyType='go'
+                            onSubmitEditing={() => passwordConfirmation.current?.focus()}
+                        />
                     </Box>
 
                     <Box alignItems='center' marginTop='m'>
