@@ -33,7 +33,7 @@ const ForgotPassword = ({ navigation }: StackNavigationProps<Routes, 'ForgotPass
     } = useFormik({
         validationSchema: ForgotPasswordSchema,
         initialValues: { email: '' },
-        onSubmit: values => console.log(values),
+        onSubmit: () => navigation.navigate('PasswordChanged'),
     });
 
     const footer = <Footer 
