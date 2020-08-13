@@ -7,7 +7,7 @@ import { StackNavigationProps, Routes } from '../components/Navigation';
 
 const { width } = Dimensions.get('window');
 const picture = {
-    src: require('../assets/05.png'),
+    src: require('./assets/05.png'),
     width: 2383,
     height: 3074,
 };

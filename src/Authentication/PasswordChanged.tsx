@@ -3,11 +3,15 @@ import React from 'react';
 import { Feather as Icon } from '@expo/vector-icons';
 
 import { Routes, StackNavigationProps } from '../components/Navigation';
-import { Container, Box, Text, Button } from '../components';
+import { Container, Box, Text, Button, CloseButton } from '../components';
 
 const PasswordChanged = ({ navigation }: StackNavigationProps<Routes, 'PasswordChanged'>) => {
     return (
-        <Container footer={<CloseButton />}> 
+        <Container footer={
+                <Box flexDirection='row' justifyContent='center'>
+                    <CloseButton onPress={() => navigation.pop()} />
+                </Box>
+            }> 
             <Box>
                 <Icon name='check' />
             </Box>

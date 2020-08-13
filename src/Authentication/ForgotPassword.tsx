@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Linking } from 'react-native';
+import { Linking } from 'react-native';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -9,15 +9,8 @@ import { Routes, StackNavigationProps } from '../components/Navigation';
 import { Container, Box, Button, Text } from '../components';
 import TextInput from './components/Form/TextInput';
 
-interface ForgotPasswordProps {
-
-}
 
 const ForgotPasswordSchema = Yup.object().shape({
-    password: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
     email: Yup.string()
       .email('Invalid email')
       .required('Required'),
@@ -33,14 +26,19 @@ const ForgotPassword = ({ navigation }: StackNavigationProps<Routes, 'ForgotPass
     } = useFormik({
         validationSchema: ForgotPasswordSchema,
         initialValues: { email: '' },
-        onSubmit: () => navigation.navigate('PasswordChanged'),
+        onSubmit: () => {
+            console.log('GO'),
+            navigation.navigate('PasswordChanged');
+        }
     });
 
-    const footer = <Footer 
-        title="Don't work?" 
-        action="Try another way" 
-        onPress={() => Linking.openURL('mailto:help@support.com')} 
-    />
+    const footer = (
+        <Footer 
+            title="Don't work?" 
+            action="Try another way" 
+            onPress={() => Linking.openURL('mailto:help@support.com')} 
+        />
+    );
 
 
     return (
@@ -75,11 +73,10 @@ const ForgotPassword = ({ navigation }: StackNavigationProps<Routes, 'ForgotPass
                         />
                     </Box>
                     
-
                     <Box alignItems='center' marginTop='m'>
                         <Button 
                             variant='primary' 
-                            onPress={handleSubmit} 
+                            onPress={() => handleSubmit()} 
                             label='Reset password' 
                         />
                     </Box>
