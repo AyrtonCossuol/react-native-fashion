@@ -42,7 +42,7 @@ const ForgotPassword = ({ navigation }: StackNavigationProps<Routes, 'ForgotPass
 
 
     return (
-        <Container {...{ footer }}>
+        <Container pattern={2} {...{ footer }}>
             <Box padding='xl'>
                 <Text 
                     variant='title1' 

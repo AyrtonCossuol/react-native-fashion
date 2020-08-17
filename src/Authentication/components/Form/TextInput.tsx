@@ -3,7 +3,7 @@ import { TextInput as RNTextInput, StyleSheet, TextInputProps as RNTextInputProp
 
 import { Feather as Icon } from '@expo/vector-icons';
 
-import { Box, useTheme } from '../../../components';
+import { Box, useTheme, RoundedIcon } from '../../../components';
 
 interface TextInputProps extends RNTextInputProps {
     icon: string;
@@ -42,21 +42,12 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>(
             </Box>
             {
                 touched && (
-                    <Box 
-                        height={SIZE} 
-                        width={SIZE} 
-                        borderRadius='m' 
+                    <RoundedIcon 
+                        name={!error ? 'check' : 'x'}
+                        size={SIZE}
                         backgroundColor={!error ? 'primary' : 'danger'}
-                        justifyContent='center'
-                        alignItems='center'
-                        style={{ borderRadius: SIZE / 2 }}
-                    >
-                        <Icon 
-                            name={!error ? 'check' : 'x'} 
-                            size={16} color='white' 
-                            style={{ textAlign: 'center' }}
-                        />
-                    </Box> 
+                        color='white'
+                    />
                 )
             }
         </Box>
