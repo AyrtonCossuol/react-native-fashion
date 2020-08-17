@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Feather as Icon } from '@expo/vector-icons';
-
 import { Routes, StackNavigationProps } from '../components/Navigation';
 import { Container, Box, Text, Button, RoundedIconButton, RoundedIcon } from '../components';
 
