@@ -1,5 +1,5 @@
 import React from 'react';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 
 import { Feather as Icon } from '@expo/vector-icons';
 
@@ -14,7 +14,7 @@ interface CheckboxProps {
 const Checkbox = ({ label, onChange, checked }: CheckboxProps) => {
 
     return (
-        <RectButton 
+        <BorderlessButton 
             onPress={() => onChange()} 
             style={{ justifyContent:'center' }}
         >
@@ -34,7 +34,7 @@ const Checkbox = ({ label, onChange, checked }: CheckboxProps) => {
                 </Box>
                 <Text variant='button'>{label}</Text>
             </Box>
-        </RectButton>
+        </BorderlessButton>
     );
 };
 
